@@ -81,6 +81,7 @@ public class EmployeeController {
     @PostMapping
     @ApiOperation("新增员工方法")
     public Result save(@RequestBody EmployeeDTO employeeDTO) {
+        System.out.println("save control 当前线程的id: " + Thread.currentThread().getId());
         log.info("新增员工{}", employeeDTO);
         employeeService.save(employeeDTO);
         return Result.success();
