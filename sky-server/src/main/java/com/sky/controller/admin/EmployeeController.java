@@ -40,7 +40,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/login")
-    @ApiOperation(value = "员工登录方法")
+    @ApiOperation(value = "员工登录")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         log.info("员工登录：{}", employeeLoginDTO);
 
@@ -69,14 +69,14 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/logout")
-    @ApiOperation(value = "员工注销方法")
+    @ApiOperation(value = "员工注销")
     public Result<String> logout() {
         return Result.success();
     }
 
 
     @PostMapping
-    @ApiOperation("新增员工方法")
+    @ApiOperation("新增员工")
     public Result save(@RequestBody EmployeeDTO employeeDTO) {
         System.out.println("save control 当前线程的id: " + Thread.currentThread().getId());
         log.info("新增员工{}", employeeDTO);
@@ -95,5 +95,29 @@ public class EmployeeController {
         log.info("员工分页查询{}", employeePageQueryDTO);
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用禁用员工账号")
+    public Result startOrStop(@PathVariable("status") Integer status, Long id) {
+        log.info("启用禁用员工账号:{}, {}", status, id);
+        employeeService.startOrStop(status, id);
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工信息")
+    public Result<Employee> getById(@PathVariable("id") Long id) {
+        log.info("根据id查询员工信息:{}", id);
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping
+    @ApiOperation("修改员工信息")
+    public Result editUserInformation(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("修改员工信息:{}", employeeDTO);
+        employeeService.editUserInformation(employeeDTO);
+        return Result.success();
     }
 }
